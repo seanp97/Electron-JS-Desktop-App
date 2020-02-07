@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>GitHub Finder</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand">Github Finder</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+        <h1>Search through Github to find users and information</h1>
+        <input type="text" class="form-control" placeholder="Search..." />
+    </div>
+
+    <div class="container gitData">
+      <div class="row marginData">
+          <div class="col-md-3">
+              <h2 id="name"></h2>
+              <img class="thumbnail" />
+              <a target="_blank" href="" class="btn btn-primary btn-block">Profile</a>
+          </div>
+          <div class="col-md-9">
+              <span class="label label-default">Public Repos: <span id="pubRepo"></span></span>
+              <span class="label label-primary">Public Gists: <span id="pubGist"></span></span>
+              <span class="label label-success">Followers: <span id="pubFollow"></span> </span>
+              <span class="label label-info">Following: <span id="pubFollowing"></span> </span>
+
+              <br><br>
+
+              <ul class="list-group">
+                  <li id="company" class="list-group-item"></li>
+                  <li id="website" class="list-group-item"></li>
+                  <li id="location" class="list-group-item"></li>
+                  <li id="member" class="list-group-item"></li>
+              </ul>
+          </div>
+      </div>
+
+
+      <div id=repos>
+      </div>
+
+    </div>
+
+  </body>
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+  <script src="jquery-3.4.1.js"></script>
+  <script>if (window.module) module = window.module;</script>
+
+  <script>
+    $(document).ready(function () {
+      function gitHub() {
+    $("input").keyup(function () { 
+        var username = $(this).val();
+
+        if (username == "") {
+            $(".gitData").addClass("divHide");
+        }
+        else {
+            $(".gitData").removeClass("divHide");
+        }
+
+        $.ajax({
+            url: "https://api.github.com/users/" + username,
+            data: {
+                client_id: "be23deb9ab8dae9b3f98",
+                client_secret: "c75519e4024327bd110ca37601467ebc82c98bcf"
+            }           
+        }).done(function (user) {
+            $(".gitData h2#name").text(user.name);
+            $(".gitData img").attr("src", user.avatar_url);
+            $(".gitData a").attr("href", user.html_url);
+            $(".gitData #pubRepo").text("Public Repos: " + user.public_repos);
+            $(".gitData #pubGist").text("Public Gists: " + user.public_gists);
+            $(".gitData #pubFollow").text("Followers: " + user.followers);
+            $(".gitData #pubFollowing").text("Following: " + user.following);
+            $(".gitData #company").text("Company: " + user.company);
+            $(".gitData #website").text("Website/Blog: " + user.blog);
+            $(".gitData #location").text("Location: " + user.location);
+            $(".gitData #member").text("Member Since: " + user.created_at);
+
+            $.ajax({
+                url: "https://api.github.com/users/" + username + "/repos",
+                data: {
+                    client_id: "be23deb9ab8dae9b3f98",
+                    client_secret: "c75519e4024327bd110ca37601467ebc82c98bcf"
+                }   
+            }).done(function (repos) {
+                $(repos).each(function (index, repo) {
+                    $("#repos").append(`
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <p>Name: <strong>${repo.name}</strong> Description: ${repo.description}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="label label-default">Forks: ${repo.forks_count}</span>
+                                    <span class="label label-primary">Watchers: ${repo.watchers_count}</span>
+                                    <span class="label label-success">Star: ${repo.stargazers_count}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="${repo.html_url}" target="_blank" class="btn btn-default">Repo Page</a>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                });
+            });
+        });
+    });
+}
+
+
+      $(document).ready(function () {
+          gitHub();
+          $(".gitData").addClass("divHide");
+      });
+    });
+  </script>
+</html>

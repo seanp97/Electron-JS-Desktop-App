@@ -1,0 +1,25 @@
+.gitData {
+    border: 1px solid #ddd;
+    border-radius: 1vh;
+    margin: 3vh auto 1vh auto;
+}
+
+.gitData.divHide {
+    display: none;
+}
+
+.gitData img {
+    width: 100%;
+}
+
+a.btn {
+    margin-bottom: 2vh;
+}
+
+.marginData {
+    margin: 2vh 0;
+}
+
+span.label {
+    margin: 0 0.25vw;
+}

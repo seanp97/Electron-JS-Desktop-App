@@ -1,0 +1,15 @@
+{
+  "name": "ejs-app",
+  "version": "1.0.0",
+  "description": "My Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Sean Pelser",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^8.0.0",
+    "jquery": "^3.4.1"
+  }
+}
