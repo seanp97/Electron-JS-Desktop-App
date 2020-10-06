@@ -9,7 +9,7 @@
   "author": "Sean Pelser",
   "license": "MIT",
   "dependencies": {
-    "electron": "^8.0.0",
+    "electron": "^8.5.2",
     "jquery": "^3.4.1"
   }
 }
